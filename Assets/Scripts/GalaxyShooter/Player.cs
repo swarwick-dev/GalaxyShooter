@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
     private float _max_health = 500f;
     List<GameObject> _l_damage;
     private Animator _anim;
+    private bool _taken_hit;
 
     // Start is called before the first frame update
     void Start()
@@ -206,6 +207,8 @@ public class Player : MonoBehaviour
         _ui_manager.UpdateHealth(_health);
         _ui_manager.UpdateScore(_points);
         _ui_manager.UpdateShield(_shield);
+        _taken_hit = false;
+        _next_fire = 0f;
 
     }
 
@@ -253,6 +256,7 @@ public class Player : MonoBehaviour
     }
 
     private void Destroyed() {
+        _next_fire = Time.time + 30f;
         _spawn.Stop();
         _anim.SetTrigger("isDestroyed");
         _audio_source.clip = _explode_sound;
@@ -263,10 +267,22 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
+        
         // if other is player
         if ( other.tag == "EnemyLaser" ) {
+
             Destroy(other.gameObject);
-            this.DamagePlayer(50);            
+
+            if ( _taken_hit == false ) {
+                _taken_hit = true;
+                StartCoroutine(BeenHit());
+                this.DamagePlayer(50);
+            }            
         }
+    }
+
+    IEnumerator BeenHit() {
+        yield return new WaitForSeconds(0.2f);
+        _taken_hit = false;
     }
 }

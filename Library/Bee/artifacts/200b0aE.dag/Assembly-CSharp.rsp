@@ -364,6 +364,7 @@
 "Assets/Scripts/GalaxyShooter/Laser.cs"
 "Assets/Scripts/GalaxyShooter/Player.cs"
 "Assets/Scripts/GalaxyShooter/PowerUp.cs"
+"Assets/Scripts/GalaxyShooter/Shield.cs"
 "Assets/Scripts/GalaxyShooter/SpawnManager.cs"
 "Assets/Scripts/GalaxyShooter/UIManager.cs"
 "Assets/Scripts/MainMenu/MainMenu.cs"

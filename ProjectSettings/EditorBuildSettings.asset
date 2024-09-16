@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: eac58e2ee1a394da8ab2c1a1860ab9b3
   - enabled: 1
-    path: Assets/Scenes/SpaceShooterScene.unity
+    path: Assets/Scenes/GalaxyShooter.unity
     guid: 0481120af5e364a909580f24c4979283
   m_configObjects: {}

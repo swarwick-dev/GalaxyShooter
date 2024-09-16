@@ -46,10 +46,11 @@ public class PowerUp : MonoBehaviour
         if ( other.tag == "Player" ) {
             Player player = other.transform.GetComponent<Player>();
             if ( player != null ) {
-                if ( _audio_source == null )
-                    Debug.LogError("Audio source is null : " + this.tag);
                 _audio_source.clip = _pu_sound;
                 _audio_source.Play();
+                
+                this.gameObject.SetActive(false);
+                
                 switch (transform.tag) {
                     case "TripleShot":
                         player.TripleShotCollected();

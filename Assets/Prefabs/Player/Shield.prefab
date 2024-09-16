@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1393295912979046052}
   - component: {fileID: 61519843964690}
   - component: {fileID: 5880700168290683673}
+  - component: {fileID: 7213253078831442143}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Shield
@@ -170,3 +171,15 @@ CapsuleCollider2D:
   m_Offset: {x: -0.00000073359564, y: 0}
   m_Size: {x: 2.793102, y: 3.4670057}
   m_Direction: 0
+--- !u!114 &7213253078831442143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782842977328528351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46365496e011b4da4928de5b0ea6589a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

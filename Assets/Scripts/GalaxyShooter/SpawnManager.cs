@@ -40,8 +40,6 @@ public class SpawnManager : MonoBehaviour
     public void Stop() {
         _running = false;
         StopAllCoroutines();
-        foreach(var obj in GameObject.FindWithTag("Enemy").GetComponents<Enemy>())
-            Destroy(obj.gameObject);
     }
 
     IEnumerator StartEnemySpawn() {

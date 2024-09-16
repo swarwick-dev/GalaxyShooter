@@ -32,9 +32,6 @@ public class Laser : MonoBehaviour
         if ( (isEnemyLaser == false && _position.y >= _y_max) ||
             (isEnemyLaser == true && _position.y <= _y_min) )
         {
-            if ( transform.parent != null )
-                Destroy(transform.parent.gameObject);
-        
             Destroy(this.gameObject);
         }
     }
