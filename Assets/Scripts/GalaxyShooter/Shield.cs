@@ -11,7 +11,7 @@ public class Shield : MonoBehaviour
     void Start()
     {
         _taken_hit = false;
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        _player = this.transform.parent.GetComponent<Player>();
         if ( _player == null ) 
             Debug.LogError("Player is null");
     }
@@ -22,18 +22,32 @@ public class Shield : MonoBehaviour
         
     }
 
+    public void Enable() {
+        this.enabled = true;
+        _taken_hit = false;
+        this.gameObject.SetActive(true);
+    }
+
+    public void Disable() {
+        this.enabled = false;
+        _taken_hit = false;
+        StopAllCoroutines();
+        this.gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter2D(Collider2D other) {
         
         // if other is player
-        if ( other.tag == "EnemyLaser" ) {
-
+        if ( other.tag == "Laser" && other.GetComponent<Laser>()._owner == "Enemy") {
             Destroy(other.gameObject);
-
-            if ( _taken_hit == false ) {
-                _taken_hit = true;
-                StartCoroutine(BeenHit());
-                _player.DamageShield(50);
-            }            
+            if ( this.enabled == true ){
+                if ( _taken_hit == false ) {
+                    _taken_hit = true;
+                    _player.DamageShield(50);
+                    StartCoroutine(BeenHit());
+                    
+                }
+            }
         }
     }
 

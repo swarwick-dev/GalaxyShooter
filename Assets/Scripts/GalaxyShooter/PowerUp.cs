@@ -4,39 +4,28 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    //private float _acceleration = 3f;
-    private Vector3 _position;
-    private float _y_max = 6.5f;
-    private float _y_min = -5f;
-    private float _x_min = -8f;
-    private float _x_max = 8f;
     private float _acceleration = 3f;
     private AudioSource _audio_source;
-    [SerializeField] private AudioClip _pu_sound;
+    private GameManager _game_mgr;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(Random.Range(_x_min, _x_max),_y_max,0);
-        _position = transform.position; 
-
-        _audio_source = GetComponent<AudioSource>();
+        _game_mgr = GameManager._instance;
+        if ( _game_mgr == null ) 
+            Debug.LogError("Game Manager is null");
+        
+        _audio_source = _game_mgr.GetSFXAudioSource();
         if ( _audio_source == null )
             Debug.LogError("Audio Source is null");
-
-        if ( _pu_sound == null ) {
-            Debug.Log("Missing sound : " + this.tag);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
         Vector3 movement = Vector3.down * _acceleration * Time.deltaTime;
-        transform.Translate(movement, Space.World );
-        _position = transform.position;
-
-        if ( _position.y <= _y_min ){
+        transform.Translate(movement);
+        if ( _game_mgr.HitLowerBounds(this.gameObject) ){
             Destroy(this.gameObject);
         }
     }
@@ -46,7 +35,7 @@ public class PowerUp : MonoBehaviour
         if ( other.tag == "Player" ) {
             Player player = other.transform.GetComponent<Player>();
             if ( player != null ) {
-                _audio_source.clip = _pu_sound;
+                _audio_source = this.gameObject.GetComponent<AudioSource>();
                 _audio_source.Play();
                 
                 this.gameObject.SetActive(false);

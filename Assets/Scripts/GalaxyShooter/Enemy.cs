@@ -1,17 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
     private float _acceleration = 4f;
-    private Vector3 _position;
-    private float _y_max = 6.5f;
-    private float _y_min = -5f;
-    private float _x_min = -8f;
-    private float _x_max = 8f;
     private Player _player;
     private AudioSource _audio_source;
     [SerializeField] private AudioClip _explode_sound;
@@ -19,20 +15,20 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject _laser_prefab;
     private float _can_fire = 0f;
     private float _fire_rate = 3f;
+    private GameManager _game_mgr;
+    private float _offset = -4f;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(Random.Range(_x_min, _x_max),_y_max,0);
-        _position = transform.position;   
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        if ( _player == null ) 
-            Debug.LogError("Player is null");
+        _game_mgr = GameManager._instance;;
+        if ( _game_mgr == null ) 
+           Debug.LogError("Game Manager is null");
 
         _anim = this.GetComponent<Animator>();
         if ( _anim == null )
             Debug.LogError("Animator is null");
-        _audio_source = GetComponent<AudioSource>();
+        _audio_source = _game_mgr.GetSFXAudioSource();
         if ( _audio_source == null )
             Debug.LogError("Audio Source is null");
     }
@@ -46,23 +42,31 @@ public class Enemy : MonoBehaviour
             FireLaser();
     }
 
+    void OnDestroy()
+    {
+        Destroy(gameObject);
+    }
+
     ///private void OnTriggerEnter(Collider other) {
     private void OnTriggerEnter2D(Collider2D other) {
-        // if other is player
-        if ( other.tag == "Player" ) {
-            _player.DamagePlayer(50);            
-            Destroyed();
-        }
 
         if ( other.tag == "Shield" ) {
+            _player = other.transform.parent.GetComponent<Player>();
             _player.DamageShield(50);
             Destroyed();
         }
 
         // if other laser 
         if ( other.tag == "Laser" ) {
-            Destroy(other.gameObject);
-            _player.AddPoints(10);
+            if ( other.GetComponent<Laser>()._owner == "Player"){
+                _player = GameObject.Find(other.GetComponent<Laser>()._owner).GetComponent<Player>();
+                _player.AddPoints(10);
+                Destroyed();
+                Destroy(other.gameObject);
+            } 
+        }
+
+        if ( other.tag == "Asteroid" ) {
             Destroyed();
         }
     }
@@ -71,9 +75,8 @@ public class Enemy : MonoBehaviour
         Vector3 direction = new Vector3(0,-1,0);
         Vector3 movement = direction * _acceleration * Time.deltaTime;
         transform.Translate(movement );
-        _position = transform.position;
 
-        if ( _position.y <= _y_min ){
+        if ( _game_mgr.HitLowerBounds(this.gameObject) ){
             Destroy(this.gameObject);
         }
     }
@@ -90,9 +93,11 @@ public class Enemy : MonoBehaviour
     }
 
     void FireLaser() {
-        _fire_rate = Random.Range(3f,6f);
+        _fire_rate = Random.Range(3f,5f);
         _can_fire = Time.time + _fire_rate;
+        Vector3 laser_pos = transform.position;
+        laser_pos.y += _offset;
         GameObject laser = Instantiate(_laser_prefab, transform.position, Quaternion.identity);
-        //laser.transform.parent = this.transform;
+        laser.GetComponent<Laser>()._owner = "Enemy";
     }
 }

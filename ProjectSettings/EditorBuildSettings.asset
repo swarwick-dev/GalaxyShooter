@@ -6,9 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: eac58e2ee1a394da8ab2c1a1860ab9b3
+    path: Assets/Scenes/MainMenu3D.unity
+    guid: cc046a93b68b64ffabccb289499c950d
   - enabled: 1
-    path: Assets/Scenes/GalaxyShooter.unity
-    guid: 0481120af5e364a909580f24c4979283
-  m_configObjects: {}
+    path: Assets/Scenes/Game3D.unity
+    guid: da447abb3262d43da8543da064951079
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 5bc6c224e7d1f4dbdaab886d712f7fa2, type: 2}

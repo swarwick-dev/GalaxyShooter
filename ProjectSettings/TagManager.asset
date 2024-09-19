@@ -14,6 +14,10 @@ TagManager:
   - PlayerDamage
   - Thruster
   - EnemyLaser
+  - GameCanvas
+  - PausePanel
+  - SpawnManager
+  - InGameUI
   layers:
   - Default
   - TransparentFX
